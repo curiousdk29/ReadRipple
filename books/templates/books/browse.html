@@ -462,12 +462,14 @@
                     <p>{{ book.description }}</p>
          
                     <!-- 📖 View in browser -->
-                    <a href="{{ book.file.url }}" target="_blank"><button>📖 View</button></a>
-          
-                    <!-- ⬇️ Download -->
-                    <a href="{{ book.file.url }}" download>
-                        <button type="button">⬇️ Download</button>
-                    </a>
+                    <a href="https://ucarecdn.com/{{ book.file_uuid }}/" target="_blank">
+                            <button>📖 View</button>
+                        </a>
+
+                        <!-- ⬇️ Download -->
+                        <a href="https://ucarecdn.com/{{ book.file_uuid }}/-/inline/no/" download>
+                            <button type="button">⬇️ Download</button>
+                        </a>
                 </div>
             {% empty %}
                 <div class="no-books">No books found for the selected filters.</div>
