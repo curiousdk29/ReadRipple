@@ -39,7 +39,11 @@ def upload_book(request):
         description = request.POST['description']
         age_group = request.POST['age_group']
         level = request.POST['level']
-        file_uuid = request.POST['file']  # UUID from Uploadcare widget
+        file = request.POST.get('file')
+        if file.startswith("https://ucarecdn.com/"):
+            file_uuid = file.split("https://ucarecdn.com/")[1].split("/")[0]
+        else:
+            file_uuid = file  # assume already UUID
 
         file_url = f"https://ucarecdn.com/{file_uuid}/"
 
@@ -56,6 +60,7 @@ def upload_book(request):
         return redirect('browse_books')
 
     return render(request, 'books/upload.html')
+
 
 
 
