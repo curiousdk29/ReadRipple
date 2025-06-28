@@ -5,6 +5,8 @@ from .models import Book
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from pyuploadcare import Uploadcare
+
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -23,24 +25,39 @@ def login_view(request):
         return redirect('browse_books')
     return render(request, 'books/login.html', {'form': form})
 
-@login_required
-def upload_book(request):
-    if not request.user.is_staff:
-        return redirect('browse_books')
+import os
 
+
+
+uc = Uploadcare(public_key='2c71a577ee545662a068', secret_key='9baa96770ff55afa2572')
+
+@login_required
+
+def upload_book(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
         age_group = request.POST['age_group']
         level = request.POST['level']
-        file = request.FILES['file']
+        file_uuid = request.POST['file']  # UUID from Uploadcare widget
+
+        file_url = f"https://ucarecdn.com/{file_uuid}/"
+
+        # Save book record
         Book.objects.create(
-            title=title, description=description,
-            age_group=age_group, level=level,
-            file=file, uploaded_by=request.user
+            title=title,
+            description=description,
+            age_group=age_group,
+            level=level,
+            file_url=file_url,
+            file_uuid=file_uuid
         )
+
         return redirect('browse_books')
+
     return render(request, 'books/upload.html')
+
+
 
 from django.contrib.auth.decorators import login_required
 
@@ -91,15 +108,24 @@ def upload_exercise(request):
             return redirect('exercise_list')
     return render(request, 'books/upload_exercise.html')
 
+from django.conf import settings
+
+uploadcare = Uploadcare(public_key=settings.UPLOADCARE['pub_key'],
+                        secret_key=settings.UPLOADCARE['secret'])
+
+
 
 
 @login_required
 def delete_book(request, book_id):
-    if not request.user.is_staff:
-        return redirect('browse_books')
-    book = get_object_or_404(Book, id=book_id)
-    book.file.delete()  # deletes the file from media folder
+    book = Book.objects.get(id=book_id)
+
+    # Delete from Uploadcare
+    uploadcare.file(book.file_uuid).delete()
+
+    # Delete from DB
     book.delete()
+
     return redirect('browse_books')
 
 @login_required

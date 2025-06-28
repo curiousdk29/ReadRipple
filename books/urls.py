@@ -12,7 +12,8 @@ urlpatterns = [
     path('browse/', browse_books, name='browse_books'),
     path('exercises/', exercise_list, name='exercise_list'),
     path('upload-exercise/', upload_exercise, name='upload_exercise'),
-     path('delete-book/<int:book_id>/', delete_book, name='delete_book'),
+    path('delete/<int:book_id>/',delete_book, name='delete_book'),
+
     path('delete-exercise/<int:exercise_id>/', delete_exercise, name='delete_exercise'),
 
 

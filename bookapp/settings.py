@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t0%$!3m*xxi(+5rcqbq&775k&r^#=nia4f5(j(%m$1p(ilf2!@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'books',
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
 
@@ -130,10 +128,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'login'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'duvy3rlsd',
-    'API_KEY': 398847735342516,
-    'API_SECRET':'vFq1X9z5_uh1jNNSLrh-4lCoEMw'
+UPLOADCARE = {
+    'pub_key': '2c71a577ee545662a068',
+    'secret': '9baa96770ff55afa2572',
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# Optional: if you want to set it as the default file storage
+DEFAULT_FILE_STORAGE = 'pyuploadcare.dj.models.FileField'
+
