@@ -55,15 +55,23 @@ def send_otp_email(email, otp):
     recipient_list = [email]
     send_mail(subject, message, from_email, recipient_list)
 
+from django.contrib.auth import login
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
+
+            # ✅ Skip OTP if user is admin (superuser or staff)
+            if user.is_superuser or user.is_staff:
+                login(request, user)
+                return redirect('home')  # Replace 'home' with your actual redirect view
+
+            # ✅ Else do OTP verification
             otp = generate_otp()
             send_otp_email(user.email, otp)
 
-            # Store OTP and username in session
             request.session['otp'] = otp
             request.session['otp_username'] = user.username
             return redirect('verify_otp')
@@ -72,6 +80,7 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'books/login.html', {'form': form})
+
 
 
 
