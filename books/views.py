@@ -6,26 +6,92 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from pyuploadcare import Uploadcare
+import os
+import random
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django import forms
+
+class InlineUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = InlineUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = InlineUserCreationForm()
     return render(request, 'books/register.html', {'form': form})
 
+
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+def send_otp_email(user_email, otp):
+    subject = "Your Login OTP"
+    message = f"Your OTP for login is: {otp}"
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [user_email]
+    send_mail(subject, message, from_email, recipient_list)
+
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+def send_otp_email(email, otp):
+    subject = 'Your Login OTP'
+    message = f'Your OTP for login is: {otp}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
+
 def login_view(request):
-    form = AuthenticationForm(data=request.POST or None)
-    if form.is_valid():
-        user = form.get_user()
-        login(request, user)
-        return redirect('browse_books')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            otp = generate_otp()
+            send_otp_email(user.email, otp)
+
+            # Store OTP and username in session
+            request.session['otp'] = otp
+            request.session['otp_username'] = user.username
+            return redirect('verify_otp')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    else:
+        form = AuthenticationForm()
     return render(request, 'books/login.html', {'form': form})
 
-import os
+
+
+def verify_otp_view(request):
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        expected_otp = request.session.get('otp')
+        username = request.session.get('otp_username')
+
+        if entered_otp == expected_otp:
+            user = User.objects.get(username=username)
+            login(request, user)
+            request.session.pop('otp', None)
+            request.session.pop('otp_username', None)
+            return redirect('browse_books')
+        else:
+            messages.error(request, 'Invalid OTP. Please try again.')
+            return render(request, 'books/otp_verify.html')
+
+    return render(request, 'books/otp_verify.html')
 
 
 
