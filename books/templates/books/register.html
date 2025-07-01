@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>ReadRipple - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +13,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #ffecd2);
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
             min-height: 100vh;
@@ -29,14 +30,14 @@
             100% { background-position: 0% 50%; }
         }
 
-        .register-container {
+        .login-container {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             padding: 40px;
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
             transform: translateY(0);
             transition: all 0.3s ease;
@@ -44,38 +45,86 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
-        .register-container:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15);
-        }
-
-        h2 {
+        .app-title {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 42px;
+            color: #fff;
             text-align: center;
-            color: white;
-            font-size: 32px;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: pulse 3s ease-in-out infinite;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffd93d);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: textGradient 4s ease infinite, bounce 2s ease-in-out infinite;
+            position: relative;
         }
 
-        @keyframes pulse {
-            0%, 100% { 
-                transform: scale(1);
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3);
+        @keyframes textGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        .app-subtitle {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .ripple-effect {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            animation: ripple 3s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
             }
-            50% { 
-                transform: scale(1.05);
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
             }
+        }
+
+        h2 {
+            font-family: 'Bubblegum Sans', cursive;
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.5); }
         }
 
         form {
@@ -96,7 +145,7 @@
             margin-bottom: 8px;
             font-size: 14px;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
         }
 
         input[type="text"],
@@ -108,52 +157,37 @@
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.9);
             font-size: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
             outline: none;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
 
         input[type="text"]:focus,
         input[type="password"]:focus,
         input[type="email"]:focus {
             background: rgba(255, 255, 255, 1);
-            transform: scale(1.02) translateY(-2px);
-            box-shadow: 0 0 25px rgba(255, 107, 107, 0.4), inset 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 2px solid rgba(255, 107, 107, 0.3);
-        }
-
-        input::placeholder {
-            color: #999;
-            font-style: italic;
-        }
-
-        /* Custom styling for form fields */
-        input[type="text"]:valid,
-        input[type="password"]:valid,
-        input[type="email"]:valid {
-            border: 2px solid rgba(46, 204, 113, 0.5);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), inset 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         button {
-            background: linear-gradient(45deg, #ff9a9e, #fecfef, #ffecd2, #fcb69f);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
             background-size: 300% 300%;
-            animation: buttonGradient 4s ease infinite;
+            animation: buttonGradient 3s ease infinite;
             color: white;
             border: none;
-            padding: 16px 32px;
+            padding: 15px 30px;
             border-radius: 15px;
             font-size: 18px;
             font-weight: bold;
+            font-family: 'Bubblegum Sans', cursive;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 10px;
-            box-shadow: 0 8px 20px rgba(255, 154, 158, 0.4);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes buttonGradient {
@@ -163,384 +197,53 @@
         }
 
         button:hover {
-            transform: translateY(-4px) scale(1.05) rotate(1deg);
-            box-shadow: 0 20px 40px rgba(255, 154, 158, 0.6);
-            animation-duration: 1s;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
-        button:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        button:hover::before {
-            left: 100%;
-        }
-
-        .login-link {
+        .register-link {
             text-align: center;
             margin-top: 25px;
             color: white;
+            font-family: 'Quicksand', sans-serif;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        .login-link a {
-            color: #ff6b6b;
+        .register-link a {
+            color: #ffd700;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
         }
 
-        .login-link a:hover {
-            color: #ff5252;
-            text-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
-            transform: scale(1.1) rotate(-2deg);
+        .register-link a:hover {
+            color: #ffed4e;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
-        .login-link a::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(45deg, #ff6b6b, #ff5252, #ff1744);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 2px;
-        }
-
-        .login-link a:hover::after {
-            width: 100%;
-        }
-
-        /* Floating hearts animation */
-        .register-container::before {
-            content: '💖 💕 ✨ 🌟 💖 💕 ✨ 🌟';
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
-            font-size: 20px;
-            animation: floatHearts 15s linear infinite;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        @keyframes floatHearts {
-            0% { transform: translateX(-100%) rotate(0deg); }
-            100% { transform: translateX(100%) rotate(360deg); }
-        }
-
-        /* Sparkle effect */
-        .register-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-                              radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
-                              radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
-            background-size: 50px 50px, 60px 60px, 40px 40px;
-            animation: sparkle 3s ease-in-out infinite;
-            pointer-events: none;
-            border-radius: 20px;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Responsive design */
         @media (max-width: 480px) {
-            .register-container {
+            .app-title {
+                font-size: 32px;
+            }
+            
+            .login-container {
                 padding: 30px 25px;
-                margin: 10px;
-                max-width: 95%;
             }
-            
-            h2 {
-                font-size: 28px;
-            }
-            
-            input[type="text"],
-            input[type="password"],
-            input[type="email"] {
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            
-            button {
-                padding: 14px 28px;
-                font-size: 16px;
-            }
-        }
-
-        /* Error messages styling */
-        .errorlist {
-            color: #ff4757;
-            background: rgba(255, 71, 87, 0.15);
-            border: 1px solid rgba(255, 71, 87, 0.3);
-            border-radius: 12px;
-            padding: 12px 15px;
-            list-style: none;
-            margin-bottom: 15px;
-            animation: slideInShake 0.6s ease-out;
-            font-size: 14px;
-        }
-
-        @keyframes slideInShake {
-            0% { transform: translateX(-100%) rotate(-5deg); opacity: 0; }
-            60% { transform: translateX(10px) rotate(2deg); opacity: 1; }
-            80% { transform: translateX(-5px) rotate(-1deg); }
-            100% { transform: translateX(0) rotate(0deg); }
-        }
-
-        .errorlist li {
-            margin: 5px 0;
-        }
-
-        /* Help text styling */
-        .helptext {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        /* Success message styling */
-        .messages {
-            margin-bottom: 20px;
-        }
-
-        .alert {
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            animation: bounceIn 0.6s ease-out;
-        }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-            50% { transform: scale(1.05) rotate(2deg); }
-            70% { transform: scale(0.9) rotate(-1deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        .alert-success {
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid rgba(46, 204, 113, 0.4);
-            color: #27ae60;
-        }
-
-        .alert-error {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            color: #e74c3c;
-        }
-
-        /* Form field focus indicator */
-        .form-field {
-            position: relative;
-        }
-
-        .form-field::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 15px;
-            padding: 2px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .form-field:focus-within::before {
-            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <h2>Register</h2>
+    <div class="login-container">
+        <div class="ripple-effect"></div>
+        <div class="app-title">ReadRipple</div>
+        <div class="app-subtitle">Where Stories Come Alive</div>
+        <h2>Welcome Back!</h2>
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Register</button>
+            <button type="submit">Let's Read!</button>
         </form>
-        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        <p class="register-link">New to ReadRipple? <a href="{% url 'register' %}">Join the Adventure</a></p>
     </div>
-
-    <script>
-        // Add interactive effects
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
-            const button = document.querySelector('button');
-            
-            // Add ripple effect to button
-            button.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.6);
-                    transform: scale(0);
-                    animation: ripple 0.6s linear;
-                    left: ${x}px;
-                    top: ${y}px;
-                    width: ${size}px;
-                    height: ${size}px;
-                    pointer-events: none;
-                `;
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
-            
-            // Add floating label effect and validation styling
-            inputs.forEach(input => {
-                const label = input.previousElementSibling;
-                const parent = input.parentElement;
-                
-                // Add form-field class for styling
-                parent.classList.add('form-field');
-                
-                if (label && label.tagName === 'LABEL') {
-                    input.addEventListener('focus', () => {
-                        label.style.transform = 'translateY(-8px) scale(0.9)';
-                        label.style.color = '#ff6b6b';
-                    });
-                    
-                    input.addEventListener('blur', () => {
-                        if (!input.value) {
-                            label.style.transform = 'translateY(0) scale(1)';
-                            label.style.color = 'white';
-                        }
-                    });
-                }
-                
-                // Add typing effect
-                input.addEventListener('input', function() {
-                    if (this.value.length > 0) {
-                        this.style.borderLeft = '4px solid rgba(46, 204, 113, 0.6)';
-                    } else {
-                        this.style.borderLeft = 'none';
-                    }
-                });
-            });
-            
-            // Add form validation feedback
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (input.hasAttribute('required') && !input.value.trim()) {
-                        input.style.animation = 'shake 0.5s ease-in-out';
-                        input.style.borderColor = '#ff4757';
-                        isValid = false;
-                        
-                        setTimeout(() => {
-                            input.style.animation = '';
-                        }, 500);
-                    }
-                });
-                
-                if (!isValid) {
-                    e.preventDefault();
-                }
-            });
-        });
-        
-        // Add ripple and shake animations
-        const animationCSS = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-            
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
-            }
-        `;
-        
-        const style = document.createElement('style');
-        style.textContent = animationCSS;
-        document.head.appendChild(style);
-        
-        // Add random floating elements
-        function createFloatingElement() {
-            const symbols = ['✨', '💖', '🌟', '💕', '🎀', '🌸'];
-            const element = document.createElement('div');
-            element.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            element.style.cssText = `
-                position: fixed;
-                font-size: ${15 + Math.random() * 10}px;
-                left: ${Math.random() * 100}vw;
-                top: 100vh;
-                pointer-events: none;
-                z-index: -1;
-                animation: floatUp ${3 + Math.random() * 2}s linear forwards;
-                opacity: 0.6;
-            `;
-            
-            document.body.appendChild(element);
-            
-            setTimeout(() => {
-                element.remove();
-            }, 5000);
-        }
-        
-        // Create floating elements periodically
-        setInterval(createFloatingElement, 2000);
-        
-        // Add float up animation
-        const floatCSS = `
-            @keyframes floatUp {
-                to {
-                    transform: translateY(-100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        
-        const floatStyle = document.createElement('style');
-        floatStyle.textContent = floatCSS;
-        document.head.appendChild(floatStyle);
-    </script>
 </body>
 </html>

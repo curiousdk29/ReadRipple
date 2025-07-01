@@ -66,7 +66,7 @@ def login_view(request):
             # ✅ Skip OTP if user is admin (superuser or staff)
             if user.is_superuser or user.is_staff:
                 login(request, user)
-                return redirect('home')  # Replace 'home' with your actual redirect view
+                return redirect('browse_books')  # Replace 'home' with your actual redirect view
 
             # ✅ Else do OTP verification
             otp = generate_otp()
