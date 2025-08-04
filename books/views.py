@@ -5,7 +5,6 @@ from .models import Book
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.shortcuts import redirect
-from pyuploadcare import Uploadcare
 import os
 import random
 from django.contrib.auth.models import User
@@ -104,32 +103,21 @@ def verify_otp_view(request):
 
 
 
-uc = Uploadcare(public_key='2c71a577ee545662a068', secret_key='9baa96770ff55afa2572')
-
 @login_required
-
 def upload_book(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
         age_group = request.POST['age_group']
         level = request.POST['level']
-        file = request.POST.get('file')
-        if file.startswith("https://ucarecdn.com/"):
-            file_uuid = file.split("https://ucarecdn.com/")[1].split("/")[0]
-        else:
-            file_uuid = file  # assume already UUID
+        file_url = request.POST['file_url']  # Direct GitHub link
 
-        file_url = f"https://ucarecdn.com/{file_uuid}/"
-
-        # Save book record
         Book.objects.create(
             title=title,
             description=description,
             age_group=age_group,
             level=level,
             file_url=file_url,
-            file_uuid=file_uuid
         )
 
         return redirect('browse_books')
@@ -190,8 +178,7 @@ def upload_exercise(request):
 
 from django.conf import settings
 
-uploadcare = Uploadcare(public_key=settings.UPLOADCARE['pub_key'],
-                        secret_key=settings.UPLOADCARE['secret'])
+
 
 
 
@@ -200,8 +187,7 @@ uploadcare = Uploadcare(public_key=settings.UPLOADCARE['pub_key'],
 def delete_book(request, book_id):
     book = Book.objects.get(id=book_id)
 
-    # Delete from Uploadcare
-    uploadcare.file(book.file_uuid).delete()
+
 
     # Delete from DB
     book.delete()

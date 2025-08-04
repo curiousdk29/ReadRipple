@@ -136,11 +136,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'login'
 
-UPLOADCARE = {
-    'pub_key': '2c71a577ee545662a068',
-    'secret': '9baa96770ff55afa2572',
-}
+
 
 # Optional: if you want to set it as the default file storage
-DEFAULT_FILE_STORAGE = 'pyuploadcare.dj.models.FileField'
+
 

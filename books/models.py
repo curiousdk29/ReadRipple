@@ -1,21 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from pyuploadcare.dj.models import FileField
+
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     age_group = models.CharField(max_length=20)
     level = models.CharField(max_length=20)
-    file_url = models.URLField()
-    file_uuid = models.CharField(max_length=64)
+    file_url = models.URLField(help_text="Paste raw GitHub URL to the PDF")
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def get_view_url(self):
-        return f"https://ucarecdn.com/{self.file_uuid}/"
+    def __str__(self):
+        return self.title
 
-    def get_download_url(self):
-        return f"https://ucarecdn.com/{self.file_uuid}/?dl="
 
 
 class ReadingExercise(models.Model):

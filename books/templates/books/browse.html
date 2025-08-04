@@ -463,14 +463,16 @@
          
                     <!-- 📖 View in browser -->
                    <!-- 📖 View in browser -->
-                        <a href="https://ucarecdn.com/{{ book.file_uuid }}/" target="_blank">
+                      <!-- 📖 View in browser -->
+                        <a href="{{ book.file_url }}" target="_blank">
                             <button>📖 View</button>
                         </a>
 
                         <!-- ⬇️ Download -->
-                        <a href="https://ucarecdn.com/{{ book.file_uuid }}/-/inline/no/" download>
+                        <a href="{{ book.file_url }}" download>
                             <button type="button">⬇️ Download</button>
                         </a>
+
                 </div>
             {% empty %}
                 <div class="no-books">No books found for the selected filters.</div>
